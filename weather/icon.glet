@@ -9,7 +9,7 @@
 	<key>Identifier</key>
 	<string>org.tynsoe.geeklet.image</string>
 	<key>ImageURL</key>
-	<string>file://localhost/Users/david.genesis.cruz/tmp/icon.gif</string>
+	<string>file:///Users/david.genesis.cruz/Documents/dev/geektools/weather/icon.gif</string>
 	<key>KeepOnTop</key>
 	<true/>
 	<key>Name</key>
