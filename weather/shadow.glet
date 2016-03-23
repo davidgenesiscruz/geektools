@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>GeekletFrame</key>
+	<string>{{3955, 311}, {287, 162}}</string>
+	<key>HasShadow</key>
+	<false/>
+	<key>Identifier</key>
+	<string>org.tynsoe.geeklet.image</string>
+	<key>ImageURL</key>
+	<string>file:///Users/david.genesis.cruz/Documents/dev/geektools/weather/corner%20shadow.png</string>
+	<key>KeepOnTop</key>
+	<true/>
+	<key>Name</key>
+	<string>shadow</string>
+	<key>Opacity</key>
+	<real>0.5</real>
+	<key>RefreshInterval</key>
+	<integer>0</integer>
+</dict>
+</plist>
