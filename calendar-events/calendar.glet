@@ -8,7 +8,7 @@
 	ZgCDAAAAP4Y=
 	</data>
 	<key>Command</key>
-	<string>cat /Users/david.genesis.cruz/Documents/dev/geektools/calendar-events/.output</string>
+	<string>cat ~/Documents/dev/geektools/calendar-events/.output</string>
 	<key>DropShadow</key>
 	<false/>
 	<key>FailureImage</key>
@@ -115,7 +115,7 @@
 	<key>Name</key>
 	<string>Calendar Events</string>
 	<key>RefreshInterval</key>
-	<integer>60</integer>
+	<integer>10</integer>
 	<key>SetLocale</key>
 	<true/>
 	<key>SuccessImage</key>

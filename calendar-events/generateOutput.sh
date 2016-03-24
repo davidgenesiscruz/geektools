@@ -6,15 +6,28 @@
 # Utility script for calendar.sh
 # Outputs to a temporary file to be switched with the actual output file
 
-path="/Users/david.genesis.cruz/Documents/dev/geektools/calendar-events/"
+function usage {
+	echo "Usage: $0 filepath"
+	echo
+	echo "filepath - specifies the path where calendar.sh is located"
+	echo "           it is also the path where .output will be saved"
+	echo
+	exit 1
+}
+
+if [ $# != 1 ]
+	then usage
+fi
+
+path="$1"
 src="calendar.sh"
 output=".output"
 tmp=".output.tmp"
 
-cd $path
+cd "$path"
 if [ ! -f "$output" ]
 	then touch "$output"
 fi
 
-$path$src > $tmp
-mv -f $tmp $output
+"$path$src" > "$tmp"
+mv -f "$tmp" "$output"
