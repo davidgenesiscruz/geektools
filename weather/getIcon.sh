@@ -5,9 +5,19 @@
 #
 # Acquires weather icon from Yahoo! Weather
 
-path="/Users/david.genesis.cruz/Documents/dev/geektools/weather/"
+function usage {
+	echo "Usage: getIcon.sh filename"
+	echo
+	echo "filename - filename with which the icon would be saved"
+	echo
+	exit 1
+}
+
+if [ $# != 1 ]
+	then usage
+fi
+
 url="http://xml.weather.yahoo.com/forecastrss?p=JAXX0085&u=c"
-filename="icon.gif"
 
 icon=$(curl -s "$url" | grep 'src' | cut -d\" -f2)
-curl -s "$icon" -o "$path$filename"
+curl -s "$icon" -o "$1"

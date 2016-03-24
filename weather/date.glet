@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>Command</key>
-	<string>~/Documents/dev/geektools/weather/condition.sh</string>
+	<string>~/Documents/dev/geektools/date-time/date.sh</string>
 	<key>DropShadow</key>
 	<false/>
 	<key>FailureImage</key>
@@ -96,11 +96,11 @@
 	ivgZ+Kj5OPnH+lf65/t3/Af8mP0p/br+S/7c/23//w==
 	</data>
 	<key>FontFamily</key>
-	<string>Avenir-LightOblique</string>
+	<string>LucidaGrande</string>
 	<key>FontSize</key>
-	<real>18</real>
+	<real>20</real>
 	<key>GeekletFrame</key>
-	<string>{{3925, 389}, {251, 23}}</string>
+	<string>{{4056, 418}, {200, 21}}</string>
 	<key>HasShadow</key>
 	<false/>
 	<key>Identifier</key>
@@ -108,9 +108,9 @@
 	<key>KeepOnTop</key>
 	<true/>
 	<key>Name</key>
-	<string>condition</string>
+	<string>date</string>
 	<key>RefreshInterval</key>
-	<integer>300</integer>
+	<integer>1</integer>
 	<key>SetLocale</key>
 	<true/>
 	<key>SuccessImage</key>
