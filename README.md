@@ -6,4 +6,4 @@ Includes the following:
 - .glet setting files
 - .sh scripts for command geeklets
 - image files for static file geeklets
-- Launchd.plist files for necessary updates
+- Launchd.plist files for value update schedules
