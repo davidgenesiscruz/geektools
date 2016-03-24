@@ -4,10 +4,11 @@
 	<dict>
 		<key>Label</key>
 		<string>local.calendarGeeklet</string>
-		<key>Program</key>
-		<string>~/Documents/dev/geektools/calendar-events/generateOutput.sh ~/Documents/dev/geektools/calendar-events/</string>
-		<key>RunAtLoad</key>
-		<true/>
+		<key>ProgramArguments</key>
+		<array>
+				<string>~/Documents/dev/geektools/calendar-events/generateOutput.sh</string>
+				<string>~/Documents/dev/geektools/calendar-events/</string>
+		</array>
 		<key>StartInterval</key>
 		<integer>60</integer>
 	</dict>
