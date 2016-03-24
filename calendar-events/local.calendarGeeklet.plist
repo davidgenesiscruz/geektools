@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-	<dict>
-		<key>Label</key>
-		<string>local.calendarGeeklet</string>
-		<key>ProgramArguments</key>
-		<array>
-				<string>~/Documents/dev/geektools/calendar-events/generateOutput.sh</string>
-				<string>~/Documents/dev/geektools/calendar-events/</string>
-		</array>
-		<key>StartInterval</key>
-		<integer>60</integer>
-	</dict>
+<dict>
+	<key>Label</key>
+	<string>local.calendarGeeklet</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/david.genesis.cruz/Documents/dev/geektools/calendar-events/generateOutput.sh</string>
+		<string>/Users/david.genesis.cruz/Documents/dev/geektools/calendar-events/</string>
+	</array>
+	<key>StartInterval</key>
+	<integer>60</integer>
+</dict>
 </plist>
