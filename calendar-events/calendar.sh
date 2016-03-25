@@ -42,7 +42,7 @@ echo " ==========================="
 
 while [[ "${timestamps[$cnt]}" == "today"* ]]
 do
-	location=$(echo ${locations[$((i+1))]} | grep "location: " | sed -e "s/.*location: //")
+	location=$(echo ${locations[$((cnt+1))]} | grep "location: " | sed -e "s/.*location: //")
 	if [ "${timestamps[$cnt]}" != "today" ]
 	then
 		if [ -n "$location" ]
@@ -68,7 +68,7 @@ echo " ==========================="
 while [[ "${timestamps[$cnt]}" == "tomorrow"* ]]
 do
 	timestamp=${timestamps[$cnt]}
-	location=$(echo ${locations[$((i+3))]} | grep "location: " | sed -e "s/.*location: //")
+	location=$(echo ${locations[$((cnt+1))]} | grep "location: " | sed -e "s/.*location: //")
 	if [ "${timestamps[$cnt]}" != "tomorrow" ]
 	then
 		if [ -n "$location" ]
