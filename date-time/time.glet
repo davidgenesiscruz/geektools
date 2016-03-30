@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>Command</key>
-	<string>/Users/david.genesis.cruz/Documents/dev/geektools/date-time/time.sh</string>
+	<string>~/Documents/dev/geektools/date-time/time.sh</string>
 	<key>DropShadow</key>
 	<false/>
 	<key>FailureImage</key>
