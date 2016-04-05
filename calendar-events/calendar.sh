@@ -24,40 +24,43 @@
 
 #------- 情報の取得 ---------#
 IFS=$'\n'
-todayTitles=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -n -nc -b "" -iep "title" eventsToday))
-todayTimes=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -n -nc -b "" -iep "datetime" eventsToday))
-tomorrowTitles=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -nc -n -b "" -iep "title" eventsFrom:tomorrow to:tomorrow))
-tomorrowTimes=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -nc -n -b "" -iep "datetime" eventsFrom:tomorrow to:tomorrow))
-IFS=$'|'
-todayLocations=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -n -nc -b "|" -iep "title,location" eventsToday))
-tomorrowLocations=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -nc -n -b '|' -iep "title,location" eventsFrom:tomorrow to:tomorrow))
+timestamps=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -n -nc -b "$" -iep "datetime" eventsToday+1))
+titles=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -n -nc -b "$" -ps "|\$|" -iep "datetime,title" eventsToday+1))
+locations=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -n -nc -b "$" -ps "|\$|" -iep "datetime,locations" eventsToday+1))
+IFS=$' '
 weatherUrl="http://xml.weather.yahoo.com/forecastrss?p=JAXX0085&u=c"
 weatherForecastLow=$(curl -s "$weatherUrl" | grep "forecast" | head -n5 | tail -n1 | cut -d'"' -f6)
 weatherForecastHigh=$(curl -s "$weatherUrl" | grep "forecast" | head -n5 | tail -n1 | cut -d'"' -f8)
 weatherForecastCondition=$(curl -s "$weatherUrl" | grep "forecast" | head -n5 | tail -n1 | cut -d'"' -f10)
+cnt=0
 
 #---------- 表示 ------------#
+echo "DEBUG MODE 202311"
 echo
 echo " TODAY"
 echo " ==========================="
 
-for i in ${!todayTitles[@]}
+while [[ "${timestamps[$cnt]}" == "\$today"* ]]
 do
-		location=$(echo ${todayLocations[$((i+1))]} | grep "location: " | sed -e "s/.*location: //")
-		if [ "${todayTimes[$i]}" != "today" ]
-		then
-			if [ -n "$location" ]
-				then echo " ${todayTimes[$i]} ＠ $location"
-				else echo " ${todayTimes[$i]}"
-			fi
-			echo "　${todayTitles[$i]}"
-		else # All day events
-			if [ -n "$location" ]
-				then echo " 《《 ${todayTitles[$i]} @ $location 》》"
-				else echo " 《《 ${todayTitles[$i]} 》》"
-			fi 
+	timestamp=$(echo ${timestamps[$cnt]} | cut -d$ -f2)
+	title=$(echo ${titles[$cnt]} | cut -d$ -f2)
+	location=$(echo ${locations[$cnt]} | cut -d$ -f3)
+
+	if [ "$timestamp" != "today" ]
+	then
+		if [ -n "$location" ]
+			then echo " ${timestamp/today at /} ＠ $location"
+			else echo " ${timestamp/today at /}"
 		fi
-		echo
+		echo "　$title"
+	else # All day events
+		if [ -n "$location" ]
+			then echo " 《《 $title @ $location 》》"
+			else echo " 《《 $title 》》"
+		fi 
+	fi
+	echo
+	((cnt++))
 done
 
 echo
@@ -65,24 +68,25 @@ echo " TOMORROW"
 echo " $weatherForecastCondition ($weatherForecastLow ~ $weatherForecastHigh ℃)"
 echo " ==========================="
 
-tomorrowCnt=${#todayTitles[@]}
-while (( $tomorrowCnt < ${#tomorrowTitles[@]} ))
+while [[ "${timestamps[$cnt]}" == "\$tomorrow"* ]]
 do
-		time=${tomorrowTimes[$tomorrowCnt]/tomorrow at /}
-		location=$(echo ${tomorrowLocations[$((tomorrowCnt+1))]} | grep "location: " | sed -e "s/.*location: //")
-		if [ "$time" != "tomorrow" ]
-		then
-			if [ -n "$location" ]
-				then echo " $time ＠ $location"
-				else echo " $time"
-			fi
-			echo "　${tomorrowTitles[$tomorrowCnt]}"
-		else # All day events
-			if [ -n "$location" ]
-				then echo " 《《 ${tomorrowTitles[$tomorrowCnt]} @ $location 》》"
-				else echo " 《《 ${tomorrowTitles[$tomorrowCnt]} 》》"
-			fi
+	timestamp=$(echo ${timestamps[$cnt]} | cut -d$ -f2)
+	title=$(echo ${titles[$cnt]} | cut -d$ -f2)
+	location=$(echo ${locations[$cnt]} | cut -d$ -f3)
+
+	if [ "$timestamps" != "tomorrow" ]
+	then
+		if [ -n "$location" ]
+			then echo " ${timestamp/tomorrow at /} ＠ $location"
+			else echo " ${timestamp/tomorrow at /}"
 		fi
-		echo
-		((tomorrowCnt++))
+		echo "　$title"
+	else # All day events
+		if [ -n "$location" ]
+			then echo " 《《 $title @ $location 》》"
+			else echo " 《《 $title 》》"
+		fi 
+	fi
+	echo
+	((cnt++))
 done
