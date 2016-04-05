@@ -24,10 +24,9 @@
 
 #------- 情報の取得 ---------#
 IFS=$'\n'
-titles=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -n -nc -b "" -iep "title" eventsToday+1))
-timestamps=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -n -nc -b "" -iep "datetime" eventsToday+1))
-IFS=$'|'
-locations=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -n -nc -b "|" -iep "title,location" eventsToday+1))
+timestamps=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -n -nc -b "$" -iep "datetime" eventsToday+1))
+titles=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -n -nc -b "$" -ps "|\$|" -iep "datetime,title" eventsToday+1))
+locations=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -n -nc -b "$" -ps "|\$|" -iep "datetime,locations" eventsToday+1))
 IFS=$' '
 weatherUrl="http://xml.weather.yahoo.com/forecastrss?p=JAXX0085&u=c"
 weatherForecastLow=$(curl -s "$weatherUrl" | grep "forecast" | head -n5 | tail -n1 | cut -d'"' -f6)
@@ -36,24 +35,28 @@ weatherForecastCondition=$(curl -s "$weatherUrl" | grep "forecast" | head -n5 | 
 cnt=0
 
 #---------- 表示 ------------#
+echo "DEBUG MODE 202311"
 echo
 echo " TODAY"
 echo " ==========================="
 
-while [[ "${timestamps[$cnt]}" == "today"* ]]
+while [[ "${timestamps[$cnt]}" == "\$today"* ]]
 do
-	location=$(echo ${locations[$((cnt+1))]} | grep "location: " | sed -e "s/.*location: //")
-	if [ "${timestamps[$cnt]}" != "today" ]
+	timestamp=$(echo ${timestamps[$cnt]} | cut -d$ -f2)
+	title=$(echo ${titles[$cnt]} | cut -d$ -f2)
+	location=$(echo ${locations[$cnt]} | cut -d$ -f3)
+
+	if [ "$timestamp" != "today" ]
 	then
 		if [ -n "$location" ]
-			then echo " ${timestamps[$cnt]/today at /} ＠ $location"
-			else echo " ${timestamps[$cnt]/today at /}"
+			then echo " ${timestamp/today at /} ＠ $location"
+			else echo " ${timestamp/today at /}"
 		fi
-		echo "　${titles[$cnt]}"
+		echo "　$title"
 	else # All day events
 		if [ -n "$location" ]
-			then echo " 《《 ${titles[$cnt]} @ $location 》》"
-			else echo " 《《 ${titles[$cnt]} 》》"
+			then echo " 《《 $title @ $location 》》"
+			else echo " 《《 $title 》》"
 		fi 
 	fi
 	echo
@@ -65,21 +68,23 @@ echo " TOMORROW"
 echo " $weatherForecastCondition ($weatherForecastLow ~ $weatherForecastHigh ℃)"
 echo " ==========================="
 
-while [[ "${timestamps[$cnt]}" == "tomorrow"* ]]
+while [[ "${timestamps[$cnt]}" == "\$tomorrow"* ]]
 do
-	timestamp=${timestamps[$cnt]}
-	location=$(echo ${locations[$((cnt+1))]} | grep "location: " | sed -e "s/.*location: //")
-	if [ "${timestamps[$cnt]}" != "tomorrow" ]
+	timestamp=$(echo ${timestamps[$cnt]} | cut -d$ -f2)
+	title=$(echo ${titles[$cnt]} | cut -d$ -f2)
+	location=$(echo ${locations[$cnt]} | cut -d$ -f3)
+
+	if [ "$timestamps" != "tomorrow" ]
 	then
 		if [ -n "$location" ]
-			then echo " ${timestamps[$cnt]/tomorrow at /} ＠ $location"
-			else echo " ${timestamps[$cnt]/tomorrow at /}"
+			then echo " ${timestamp/tomorrow at /} ＠ $location"
+			else echo " ${timestamp/tomorrow at /}"
 		fi
-		echo "　${titles[$cnt]}"
+		echo "　$title"
 	else # All day events
 		if [ -n "$location" ]
-			then echo " 《《 ${titles[$cnt]} @ $location 》》"
-			else echo " 《《 ${titles[$cnt]} 》》"
+			then echo " 《《 $title @ $location 》》"
+			else echo " 《《 $title 》》"
 		fi 
 	fi
 	echo
