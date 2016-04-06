@@ -24,6 +24,11 @@
 
 #--------- Helper -----------#
 function displayEvents {
+	if [[ "${timestamps[$cnt]}" != "\$$1"* ]]
+	then
+		echo "no events $1"
+		return
+	fi
 	while [[ "${timestamps[$cnt]}" == "\$$1"* ]]
 	do
 		timestamp=$(echo ${timestamps[$cnt]} | cut -d$ -f2)
