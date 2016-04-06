@@ -1,2 +1,7 @@
+#---- Local setting files ----#
+.alignGeeklets.scpt
+.alignGeekeltsSmall.scpt
+
+#---- Output files ----#
 calendar-events/.output
 weather/icon.gif
