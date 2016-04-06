@@ -1,6 +1,6 @@
 #---- Local setting files ----#
 .alignGeeklets.scpt
-.alignGeekeltsSmall.scpt
+.alignGeekletsSmall.scpt
 
 #---- Output files ----#
 calendar-events/.output
