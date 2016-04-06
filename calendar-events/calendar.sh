@@ -22,6 +22,32 @@
 # 13:00 - 14:00 @ Tiffany's
 # 　Lunchdate
 
+#--------- Helper -----------#
+function displayEvents {
+	while [[ "${timestamps[$cnt]}" == "\$$1"* ]]
+	do
+		timestamp=$(echo ${timestamps[$cnt]} | cut -d$ -f2)
+		title=$(echo ${titles[$cnt]} | cut -d$ -f2)
+		location=$(echo ${locations[$cnt]} | cut -d$ -f3)
+	
+		if [ "$timestamp" != "$1" ]
+		then
+			if [ -n "$location" ]
+				then echo " ${timestamp/$1 at /} ＠ $location"
+				else echo " ${timestamp/$1 at /}"
+			fi
+			echo "　$title"
+		else # All day events
+			if [ -n "$location" ]
+				then echo " 《《 $title @ $location 》》"
+				else echo " 《《 $title 》》"
+			fi 
+		fi
+		echo
+		((cnt++))
+	done
+}
+
 #------- 情報の取得 ---------#
 IFS=$'\n'
 timestamps=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -n -nc -b "$" -iep "datetime" eventsToday+1))
@@ -38,54 +64,9 @@ cnt=0
 echo
 echo " TODAY"
 echo " ==========================="
-
-while [[ "${timestamps[$cnt]}" == "\$today"* ]]
-do
-	timestamp=$(echo ${timestamps[$cnt]} | cut -d$ -f2)
-	title=$(echo ${titles[$cnt]} | cut -d$ -f2)
-	location=$(echo ${locations[$cnt]} | cut -d$ -f3)
-
-	if [ "$timestamp" != "today" ]
-	then
-		if [ -n "$location" ]
-			then echo " ${timestamp/today at /} ＠ $location"
-			else echo " ${timestamp/today at /}"
-		fi
-		echo "　$title"
-	else # All day events
-		if [ -n "$location" ]
-			then echo " 《《 $title @ $location 》》"
-			else echo " 《《 $title 》》"
-		fi 
-	fi
-	echo
-	((cnt++))
-done
-
+displayEvents "today"
 echo
 echo " TOMORROW"
 echo " $weatherForecastCondition ($weatherForecastLow ~ $weatherForecastHigh ℃)"
 echo " ==========================="
-
-while [[ "${timestamps[$cnt]}" == "\$tomorrow"* ]]
-do
-	timestamp=$(echo ${timestamps[$cnt]} | cut -d$ -f2)
-	title=$(echo ${titles[$cnt]} | cut -d$ -f2)
-	location=$(echo ${locations[$cnt]} | cut -d$ -f3)
-
-	if [ "$timestamps" != "tomorrow" ]
-	then
-		if [ -n "$location" ]
-			then echo " ${timestamp/tomorrow at /} ＠ $location"
-			else echo " ${timestamp/tomorrow at /}"
-		fi
-		echo "　$title"
-	else # All day events
-		if [ -n "$location" ]
-			then echo " 《《 $title @ $location 》》"
-			else echo " 《《 $title 》》"
-		fi 
-	fi
-	echo
-	((cnt++))
-done
+displayEvents "tomorrow"
