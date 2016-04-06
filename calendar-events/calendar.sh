@@ -35,7 +35,6 @@ weatherForecastCondition=$(curl -s "$weatherUrl" | grep "forecast" | head -n5 | 
 cnt=0
 
 #---------- 表示 ------------#
-echo "DEBUG MODE 202311"
 echo
 echo " TODAY"
 echo " ==========================="
