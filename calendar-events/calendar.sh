@@ -33,7 +33,7 @@ function displayEvents {
 	do
 		timestamp=$(echo ${timestamps[$cnt]} | cut -d$ -f2)
 		title=$(echo ${titles[$cnt]} | cut -d$ -f2)
-		location=$(echo ${locations[$cnt]} | cut -d$ -f3)
+		location=$(echo ${locations[$cnt]} | cut -d$ -f2 | cut -d: -f2-)
 	
 		if [ "$timestamp" != "$1" ]
 		then
@@ -55,9 +55,10 @@ function displayEvents {
 
 #------- 情報の取得 ---------#
 IFS=$'\n'
-timestamps=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -n -nc -b "$" -iep "datetime" eventsToday+1))
-titles=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -n -nc -b "$" -ps "|\$|" -iep "datetime,title" eventsToday+1))
-locations=($(/usr/local/bin/icalBuddy -ec "特定日サービス" -eep "attendees" -n -nc -b "$" -ps "|\$|" -iep "datetime,locations" eventsToday+1))
+remCals="特定日サービス,52C6D8C2-7AE9-45FE-ADDC-1123075207AF,キャリトレ監視カレンダー"
+timestamps=($(/usr/local/bin/icalBuddy -ec "$remCals" -eep "attendees" -n -nc -b "$" -iep "datetime" eventsToday+1))
+titles=($(/usr/local/bin/icalBuddy -ec "$remCals" -eep "attendees" -n -nc -b "$" -ps "|\$|" -iep "datetime,title" eventsToday+1))
+locations=($(/usr/local/bin/icalBuddy -ec "$remCals" -eep "attendees" -n -nc -b "$" -ps "|\$|" -iep "datetime,location" eventsToday+1))
 IFS=$' '
 weatherUrl="http://xml.weather.yahoo.com/forecastrss?p=JAXX0085&u=c"
 weatherForecastLow=$(curl -s "$weatherUrl" | grep "forecast" | head -n5 | tail -n1 | cut -d'"' -f6)
