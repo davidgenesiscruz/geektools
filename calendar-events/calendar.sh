@@ -33,7 +33,9 @@ function displayEvents {
 	do
 		timestamp=$(echo ${timestamps[$cnt]} | cut -d$ -f2)
 		title=$(echo ${titles[$cnt]} | cut -d$ -f2)
-		location=$(echo ${locations[$cnt]} | cut -d$ -f2 | cut -d: -f2-)
+		if [[ ${locations[$cnt]} =~ "location" ]]
+			then location=$(echo ${locations[$cnt]} | cut -d$ -f2 | cut -d: -f2-)
+		fi
 	
 		if [ "$timestamp" != "$1" ]
 		then
