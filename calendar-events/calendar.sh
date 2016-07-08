@@ -38,18 +38,18 @@ function displayEvents {
 			then location=$(echo ${locations[$cnt]} | cut -d$ -f2 | cut -d: -f2-)
 		fi
 	
-		if [ "$timestamp" != "$1" ]
+		if [[ "$timestamp" == "$1" || "$timestamp" == "$1 - "* ]] # All day events
 		then
+			if [ -n "$location" ]
+				then echo " 《《 $title @ $location 》》"
+				else echo " 《《 $title 》》"
+			fi 
+		else
 			if [ -n "$location" ]
 				then echo " ${timestamp/$1 at /} ＠ $location"
 				else echo " ${timestamp/$1 at /}"
 			fi
 			echo "　$title"
-		else # All day events
-			if [ -n "$location" ]
-				then echo " 《《 $title @ $location 》》"
-				else echo " 《《 $title 》》"
-			fi 
 		fi
 		echo
 		((cnt++))
