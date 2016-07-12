@@ -24,36 +24,42 @@
 
 #--------- Helper -----------#
 function displayEvents {
-	if [[ "${timestamps[$cnt]}" != "\$$1"* ]]
+	noEvents=true
+	for cnt in "${!timestamps[@]}"
+	do
+		if [[ "${timestamps[$cnt]}" == "\$$1"* ]]
+		then
+			if [ "$noEvents" = true ]
+				then noEvents=false
+			fi
+			timestamp=$(echo ${timestamps[$cnt]} | cut -d$ -f2)
+			title=$(echo ${titles[$cnt]} | cut -d$ -f2)
+			location=""
+			if [[ ${locations[$cnt]} =~ "location" ]]
+				then location=$(echo ${locations[$cnt]} | cut -d$ -f2 | cut -d: -f2-)
+			fi
+		
+			if [[ "$timestamp" == "$1" || "$timestamp" == "$1 - "* ]] # All day events
+			then
+				if [ -n "$location" ]
+					then echo " 《《 $title @ $location 》》"
+					else echo " 《《 $title 》》"
+				fi 
+			else
+				if [ -n "$location" ]
+					then echo " ${timestamp/$1 at /} ＠ $location"
+					else echo " ${timestamp/$1 at /}"
+				fi
+				echo "　$title"
+			fi
+			echo
+		fi
+	done
+
+	if [ "$noEvents" = true ]
 	then
 		echo "no events $1"
-		return
 	fi
-	while [[ "${timestamps[$cnt]}" == "\$$1"* ]]
-	do
-		timestamp=$(echo ${timestamps[$cnt]} | cut -d$ -f2)
-		title=$(echo ${titles[$cnt]} | cut -d$ -f2)
-		location=""
-		if [[ ${locations[$cnt]} =~ "location" ]]
-			then location=$(echo ${locations[$cnt]} | cut -d$ -f2 | cut -d: -f2-)
-		fi
-	
-		if [[ "$timestamp" == "$1" || "$timestamp" == "$1 - "* ]] # All day events
-		then
-			if [ -n "$location" ]
-				then echo " 《《 $title @ $location 》》"
-				else echo " 《《 $title 》》"
-			fi 
-		else
-			if [ -n "$location" ]
-				then echo " ${timestamp/$1 at /} ＠ $location"
-				else echo " ${timestamp/$1 at /}"
-			fi
-			echo "　$title"
-		fi
-		echo
-		((cnt++))
-	done
 }
 
 #------- 情報の取得 ---------#
